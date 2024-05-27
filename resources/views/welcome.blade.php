@@ -1,12 +1,13 @@
-@php session_start();@endphp
+{{-- @php session_start();@endphp --}}
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-        <title>Document</title>
+        <title>Multi Action Form</title>
         <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}" />
+        <style>tr{cursor: pointer;}</style>
     </head>
     <body class="bg-dark">
         <div class="container mt-3 shadow-lg p-5 bg-light rounded-3">
@@ -17,9 +18,9 @@
                 @isset($_SESSION['delete'])alert-danger @endisset
             ">
             <span>
-                @isset($_SESSION['success']){{$_SESSION['success']}} @php unset($_SESSION['success'])@endphp @endisset
-                @isset($_SESSION['update']){{$_SESSION['update']}}@php unset($_SESSION['update'])@endphp @endisset
-                @isset($_SESSION['delete']){{$_SESSION['delete']}}@php unset($_SESSION['delete'])@endphp @endisset
+                @isset($_SESSION['success']){!!$_SESSION['success']!!} @php unset($_SESSION['success'])@endphp @endisset
+                @isset($_SESSION['update']){!!$_SESSION['update']!!}@php unset($_SESSION['update'])@endphp @endisset
+                @isset($_SESSION['delete']){!!$_SESSION['delete']!!}@php unset($_SESSION['delete'])@endphp @endisset
             </span>
             </div>
             <div class="heading mb-5">
@@ -185,7 +186,7 @@
                         <button class="btn btn-success col-2 mx-3" id="newEntry">
                             New
                         </button>
-                        <button class="btn btn-dark col-2 mx-3" id="delete-btn">
+                        <button class="btn btn-warning text-light col-2 mx-3" id="delete-btn">
                             Delete
                         </button>
                         <button class="btn btn-info text-light col-2 mx-2" id="edit-btn">
@@ -193,6 +194,49 @@
                         </button>
                     </div>
                 </form>
+            </div>
+        </div>
+
+
+        <div class="container bg-light position-fixed top-0 rounded shadow-lg user-select-none w-100 d-none" id="table-container" style="height: 97%;margin-inline:8.3%;">
+            <div class="d-flex">
+                <h2 class="heading mx-3 w-50 mt-4 text-primary">Student's Information</h2>
+                <div class="w-75 mx-2 mt-4">
+                    <input type="search" name="search" id="search" class="form-control" placeholder="Search by student name..">
+                </div>
+                <div class="mx-2 mt-4 d-flex h-25">
+                   <span class="btn btn-success">Setting</span>
+                    <span class="btn btn-info mx-1">Help</span>
+                </div>
+                <div>
+                    <img src="{{asset('icons/close.png')}}" id="close-img" style="height: .7rem;width:.7rem;cursor: pointer;">
+                </div>
+            </div>
+            <div class="my-3 px-3 mx-auto overflow-scroll w-100 h-75" style="scrollbar-width:none;">
+                <table class="table table-bordered table-striped w-100" id="tableData">
+                    <tr class="text-center">
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Class</th>
+                        <th>Age</th>
+                    </tr>
+                    @foreach ($students as $student)
+                        <tr>
+                            <td>{{$student->id}}</td>
+                            <td class="searchKey">{{$student->std_name}}</td>
+                            <td>{{$student->email}}</td>
+                            <td>{{$student->std_class}}</td>
+                            <td>{{$student->age}}</td>
+                        </tr>
+                    @endforeach
+                    <tr class="text-center">
+                        <td colspan="5">...</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="container my-2 text-center">
+                <button class="btn btn-danger w-25" id="select-button" disabled>Select</button>
             </div>
         </div>
         <script src="{{ asset('js/script.js') }}"></script>

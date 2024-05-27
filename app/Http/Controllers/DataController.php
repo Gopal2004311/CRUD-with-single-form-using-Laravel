@@ -9,15 +9,13 @@ use Illuminate\Http\Request;
 //
 class DataController extends Controller
 {
+    public function getAll()
+    {
+        $students = student::all();
+        return view('welcome', compact('students'));
+    }
     public function getLast()
     {
-        //using DB class (query builder)
-        // $d = DB::table("students")
-        //     ->select("id")
-        //     ->orderBy("id", "DESC")
-        //     ->limit(1)
-        //     ->get();
-
         //using student model (using Eloquent ORM)
         $d = student::select("id")
             ->orderBy("id", "DESC")
@@ -66,8 +64,11 @@ class DataController extends Controller
             "std_class" => $class,
             "age" => $request->age,
         ]);
-
-        $_SESSION['success'] = "Added Successfully..!";
+        if ($res) {
+            $_SESSION['success'] = "<b>Success! </b>Added Successfully..!";
+        } else {
+            $_SESSION['success'] = "<b>Failed! </b>Record cannot added..!";
+        }
 
         return redirect()->route('home');
     }
@@ -93,9 +94,9 @@ class DataController extends Controller
         ]);
 
         if ($res) {
-            $_SESSION['update'] = "Record Updated Successfully..!";
+            $_SESSION['update'] = "<b>Success! </b>Record Updated Successfully..!";
         } else {
-            $_SESSION['update'] = "Record Cannot Updated..!";
+            $_SESSION['update'] = "<b>Failed! </b>Record Cannot Updated..!";
         }
 
         return redirect()->route('home');
@@ -105,9 +106,9 @@ class DataController extends Controller
     {
         $res = student::where("id", $id)->delete();
         if ($res) {
-            $_SESSION['delete'] = "Record Deleted Successfully..!";
+            $_SESSION['delete'] = "<b>Success! </b>Record Deleted Successfully..!";
         } else {
-            $_SESSION['delete'] = "Record Cannot Deleted..!";
+            $_SESSION['delete'] = "<b>Failed! </b>Record Cannot Deleted..!";
         }
         return redirect()->route('home');
     }

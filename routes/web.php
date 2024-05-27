@@ -3,10 +3,10 @@
 use App\Http\Controllers\DataController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name("home");
 Route::controller(DataController::class)->group(function () {
+
+    Route::get('/', 'getAll')->name("home");
+
     Route::get('/getLast', 'getLast')->name("LastEntry");
 
     Route::post('/insert/student', 'insert')->name('Insert');
